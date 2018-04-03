@@ -17,7 +17,7 @@ flickr = FlickrAPI(api_key, api_secret)
 flickr.authenticate_via_browser(perms='write')
 
 extras  = 'url_m'
-photos = flickr.walk(tags='birbcoin,new', tag_mode='all', extras = extras, format='etree')
+photos = flickr.walk(tags='birbcoin,new,-checked', tag_mode='all', extras = extras, format='etree')
 count = 0
 print(photos)
 
@@ -30,8 +30,9 @@ for photo in photos:
 	count += 1
 	try:
 		print(count)
-		#photo.flickr.photos.removeTag(tag_id ='new')
-		print('removing')
+		cur_photo = photo.get('id')
+		print('changing tag')
+		flickr.photos.addTags(photo_id=cur_photo,tags = 'checked')
 		url = photo.get('url_m')
 		print(url)
 		urllib.request.urlretrieve(url,  folder + str(count) +".jpg")
